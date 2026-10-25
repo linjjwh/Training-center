@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.fx.ui.ApplicationDialogController"
+      spacing="12" styleClass="dialog-root">
+    <padding>
+        <Insets top="18" right="20" bottom="16" left="20"/>
+    </padding>
+
+    <Label fx:id="titleLabel" text="Заявка на обучение" styleClass="dialog-title"/>
+
+    <GridPane hgap="12" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="130" halignment="RIGHT"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="Слушатель:" styleClass="field-label"
+               GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="userField" maxWidth="Infinity"
+                  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Название курса:" styleClass="field-label"
+               GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="courseField" promptText="Например: Java Developer"
+                   maxWidth="Infinity"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Дата заявки:" styleClass="field-label"
+               GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <DatePicker fx:id="dateField" maxWidth="Infinity"
+                    GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Статус:" styleClass="field-label"
+               GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="statusField" maxWidth="Infinity"
+                  GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Форма обучения:" styleClass="field-label"
+               GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="educationField" maxWidth="Infinity"
+                  GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Комментарий:" styleClass="field-label"
+               GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <TextArea fx:id="commentField" promptText="Необязательно"
+                  wrapText="true" prefRowCount="3" maxWidth="Infinity"
+                  GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <Label text="Правила смены статуса: Новая → На рассмотрении/Отменена; На рассмотрении → Одобрена/Отклонена/Отменена."
+           wrapText="true" styleClass="muted-label"/>
+
+    <Label fx:id="errorLabel" visible="false" managed="false"
+           wrapText="true" styleClass="error-label"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Отмена" onAction="#handleCancel" styleClass="secondary-button"/>
+        <Button text="Сохранить" onAction="#handleSave" styleClass="primary-button"/>
+    </HBox>
+</VBox>

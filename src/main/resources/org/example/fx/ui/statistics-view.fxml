@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.fx.ui.StatisticsController"
+      spacing="14">
+    <padding>
+        <Insets top="18" right="22" bottom="14" left="22"/>
+    </padding>
+
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="toolbar">
+        <Label text="Статистика заявок" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Обновить" onAction="#handleRefresh"/>
+    </HBox>
+
+    <Label text="Показатели рассчитаны по всем заявкам учебного центра"
+           styleClass="page-subtitle"/>
+
+    <FlowPane fx:id="cardsPane" hgap="12" vgap="12" VBox.vgrow="ALWAYS"/>
+</VBox>

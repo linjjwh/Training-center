@@ -1,6 +1,8 @@
 package org.example.repository;
 
 import org.example.model.User;
+import org.example.exception.DatabaseException;
+import org.example.exception.EntityNotFoundException;
 import org.example.util.DatabaseManager;
 
 import java.sql.*;
@@ -36,7 +38,7 @@ public class UserRepositoryImpl implements UserRepository {
             return user;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при создании пользователя", e);
+            throw new DatabaseException("Ошибка при создании пользователя", e);
         }
     }
 
@@ -64,7 +66,7 @@ public class UserRepositoryImpl implements UserRepository {
             return users;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при получении пользователей", e);
+            throw new DatabaseException("Ошибка при получении пользователей", e);
         }
     }
 
@@ -92,7 +94,7 @@ public class UserRepositoryImpl implements UserRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при поиске пользователя", e);
+            throw new DatabaseException("Ошибка при поиске пользователя", e);
         }
     }
 
@@ -116,7 +118,7 @@ public class UserRepositoryImpl implements UserRepository {
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new RuntimeException(
+                throw new EntityNotFoundException(
                         "Пользователь с ID " + user.getId() + " не найден"
                 );
             }
@@ -124,7 +126,7 @@ public class UserRepositoryImpl implements UserRepository {
             return user;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при изменении пользователя", e);
+            throw new DatabaseException("Ошибка при изменении пользователя", e);
         }
     }
 
@@ -144,13 +146,13 @@ public class UserRepositoryImpl implements UserRepository {
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new RuntimeException(
+                throw new EntityNotFoundException(
                         "Пользователь с ID " + id + " не найден"
                 );
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при удалении пользователя", e);
+            throw new DatabaseException("Ошибка при удалении пользователя", e);
         }
     }
 
@@ -178,7 +180,7 @@ public class UserRepositoryImpl implements UserRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при поиске пользователя по email", e
             );
         }
@@ -211,7 +213,7 @@ public class UserRepositoryImpl implements UserRepository {
             return users;
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при поиске пользователя по имени", e
             );
         }

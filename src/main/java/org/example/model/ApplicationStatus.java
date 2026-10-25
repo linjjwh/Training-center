@@ -1,9 +1,19 @@
 package org.example.model;
 
 public enum ApplicationStatus {
-    NEW,
-    UNDER_REVIEW,
-    APPROVED,
-    REJECTED,
-    CANCELLED
+    NEW("Новая"),
+    UNDER_REVIEW("На рассмотрении"),
+    APPROVED("Одобрена"),
+    REJECTED("Отклонена"),
+    CANCELLED("Отменена");
+
+    private final String displayName;
+
+    ApplicationStatus(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }

@@ -4,6 +4,8 @@ import org.example.model.ApplicationStatus;
 import org.example.model.EducationType;
 import org.example.model.TrainingApplication;
 import org.example.model.User;
+import org.example.exception.DatabaseException;
+import org.example.exception.EntityNotFoundException;
 import org.example.util.DatabaseManager;
 
 import java.sql.*;
@@ -63,7 +65,7 @@ public class TrainingApplicationRepositoryImpl
             return application;
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при создании заявки", e
             );
         }
@@ -89,7 +91,7 @@ public class TrainingApplicationRepositoryImpl
             return applications;
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при получении заявок", e
             );
         }
@@ -117,7 +119,7 @@ public class TrainingApplicationRepositoryImpl
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при поиске заявки", e
             );
         }
@@ -154,7 +156,7 @@ public class TrainingApplicationRepositoryImpl
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new RuntimeException(
+                throw new EntityNotFoundException(
                         "Заявка с ID " + application.getId() + " не найдена"
                 );
             }
@@ -162,7 +164,7 @@ public class TrainingApplicationRepositoryImpl
             return application;
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при изменении заявки", e
             );
         }
@@ -184,13 +186,13 @@ public class TrainingApplicationRepositoryImpl
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new RuntimeException(
+                throw new EntityNotFoundException(
                         "Заявка с ID " + id + " не найдена"
                 );
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при удалении заявки", e
             );
         }
@@ -223,6 +225,37 @@ public class TrainingApplicationRepositoryImpl
     }
 
     @Override
+    public List<TrainingApplication> findByUserId(int userId) {
+
+        String sql = BASE_SELECT + """
+                WHERE a.user_id = ?
+                ORDER BY a.application_date DESC, a.id DESC
+                """;
+
+        List<TrainingApplication> applications = new ArrayList<>();
+
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    applications.add(mapRow(resultSet));
+                }
+            }
+
+            return applications;
+
+        } catch (SQLException e) {
+            throw new DatabaseException(
+                    "Ошибка при получении заявок слушателя", e
+            );
+        }
+    }
+
+    @Override
     public List<TrainingApplication> findByStatus(
             ApplicationStatus status
     ) {
@@ -249,7 +282,7 @@ public class TrainingApplicationRepositoryImpl
             return applications;
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при фильтрации заявок по статусу", e
             );
         }
@@ -282,7 +315,7 @@ public class TrainingApplicationRepositoryImpl
             return applications;
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при фильтрации заявок по типу обучения", e
             );
         }
@@ -310,7 +343,7 @@ public class TrainingApplicationRepositoryImpl
             return applications;
 
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DatabaseException(
                     "Ошибка при поиске заявок", e
             );
         }

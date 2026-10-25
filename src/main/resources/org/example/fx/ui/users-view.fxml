@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.fx.ui.UsersController"
+      spacing="10">
+    <padding>
+        <Insets top="18" right="22" bottom="14" left="22"/>
+    </padding>
+
+    <Label text="Слушатели" styleClass="page-title"/>
+    <Label text="Связанная сущность: данные слушателей, на которых оформлены заявки"
+           styleClass="page-subtitle"/>
+
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="toolbar">
+        <Button text="+ Добавить" onAction="#handleAdd" styleClass="primary-button"/>
+        <Button text="Изменить" onAction="#handleEdit"/>
+        <Button text="Удалить" onAction="#handleDelete" styleClass="danger-button"/>
+        <Button text="Заявки слушателя" onAction="#handleShowApplications"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Обновить" onAction="#handleRefresh"/>
+    </HBox>
+
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="filter-panel">
+        <TextField fx:id="searchField"
+                   promptText="Поиск: ФИО, email или телефон..."
+                   HBox.hgrow="ALWAYS"/>
+        <Button text="Сбросить" onAction="#handleClearSearch" styleClass="secondary-button"/>
+    </HBox>
+
+    <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+        <columns>
+            <TableColumn fx:id="idColumn" text="№" prefWidth="50" minWidth="45"/>
+            <TableColumn fx:id="fullNameColumn" text="ФИО" prefWidth="230"/>
+            <TableColumn fx:id="emailColumn" text="Email" prefWidth="200"/>
+            <TableColumn fx:id="phoneColumn" text="Телефон" prefWidth="150"/>
+        </columns>
+        <placeholder>
+            <Label text="Слушателей нет. Добавьте слушателя, чтобы оформлять заявки."/>
+        </placeholder>
+    </TableView>
+
+    <Label fx:id="countLabel" text="Показано слушателей: 0" styleClass="muted-label"/>
+</VBox>

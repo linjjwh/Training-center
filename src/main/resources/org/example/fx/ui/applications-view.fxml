@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.fx.ui.ApplicationsController"
+      spacing="10">
+    <padding>
+        <Insets top="18" right="22" bottom="14" left="22"/>
+    </padding>
+
+    <Label text="Заявки на обучение" styleClass="page-title"/>
+    <Label text="Добавление, редактирование, удаление, поиск и анализ заявок"
+           styleClass="page-subtitle"/>
+
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="toolbar">
+        <Button text="+ Добавить" onAction="#handleAdd" styleClass="primary-button"/>
+        <Button text="Изменить" onAction="#handleEdit"/>
+        <Button text="Просмотр" onAction="#handleView"/>
+        <Button text="Удалить" onAction="#handleDelete" styleClass="danger-button"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Обновить" onAction="#handleRefresh"/>
+        <Button text="Экспорт в Excel" onAction="#handleExport" styleClass="primary-button"/>
+    </HBox>
+
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="filter-panel">
+        <TextField fx:id="searchField"
+                   promptText="Поиск: слушатель, курс или комментарий..."
+                   HBox.hgrow="ALWAYS"/>
+        <ComboBox fx:id="statusFilter" promptText="Все статусы" prefWidth="170"/>
+        <ComboBox fx:id="educationFilter" promptText="Все формы" prefWidth="150"/>
+        <DatePicker fx:id="dateFromFilter" promptText="Дата от" prefWidth="140"/>
+        <DatePicker fx:id="dateToFilter" promptText="до" prefWidth="140"/>
+        <Button text="Сбросить" onAction="#handleClearFilters" styleClass="secondary-button"/>
+    </HBox>
+
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Label text="Сортировка:" styleClass="field-label"/>
+        <ComboBox fx:id="sortBox" prefWidth="240" onAction="#handleSortChange"/>
+        <Label text="Также можно нажимать на заголовки столбцов таблицы."
+               styleClass="muted-label"/>
+    </HBox>
+
+    <TableView fx:id="applicationTable" VBox.vgrow="ALWAYS">
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+        <columns>
+            <TableColumn fx:id="idColumn" text="№" prefWidth="50" minWidth="45"/>
+            <TableColumn fx:id="userColumn" text="Слушатель" prefWidth="170"/>
+            <TableColumn fx:id="courseColumn" text="Курс" prefWidth="170"/>
+            <TableColumn fx:id="dateColumn" text="Дата" prefWidth="105" minWidth="95"/>
+            <TableColumn fx:id="statusColumn" text="Статус" prefWidth="135"/>
+            <TableColumn fx:id="educationColumn" text="Форма обучения" prefWidth="125"/>
+            <TableColumn fx:id="commentColumn" text="Комментарий" prefWidth="180"/>
+        </columns>
+        <placeholder>
+            <Label text="Заявок нет. Добавьте заявку или измените условия поиска."/>
+        </placeholder>
+    </TableView>
+
+    <Label fx:id="countLabel" text="Показано заявок: 0 из 0" styleClass="muted-label"/>
+</VBox>

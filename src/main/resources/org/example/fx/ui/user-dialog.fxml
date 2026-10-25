@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.fx.ui.UserDialogController"
+      spacing="12" styleClass="dialog-root">
+    <padding>
+        <Insets top="18" right="20" bottom="16" left="20"/>
+    </padding>
+
+    <Label fx:id="titleLabel" text="Слушатель" styleClass="dialog-title"/>
+
+    <GridPane hgap="12" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="110" halignment="RIGHT"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="ФИО:" styleClass="field-label"
+               GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="fullNameField" promptText="Иванов Иван Иванович"
+                   maxWidth="Infinity"
+                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Email:" styleClass="field-label"
+               GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="emailField" promptText="ivanov@mail.ru"
+                   maxWidth="Infinity"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Телефон:" styleClass="field-label"
+               GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="phoneField" promptText="+79990000001"
+                   maxWidth="Infinity"
+                   GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <Label text="Email должен быть уникальным. Телефон необязателен."
+           wrapText="true" styleClass="muted-label"/>
+
+    <Label fx:id="errorLabel" visible="false" managed="false"
+           wrapText="true" styleClass="error-label"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Отмена" onAction="#handleCancel" styleClass="secondary-button"/>
+        <Button text="Сохранить" onAction="#handleSave" styleClass="primary-button"/>
+    </HBox>
+</VBox>

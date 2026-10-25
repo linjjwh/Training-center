@@ -23,6 +23,8 @@ public interface TrainingApplicationRepository {
 
     List<TrainingApplication> searchByUserName(String userName);
 
+    List<TrainingApplication> findByUserId(int userId);
+
     List<TrainingApplication> findByStatus(ApplicationStatus status);
 
     List<TrainingApplication> findByEducationType(EducationType educationType);

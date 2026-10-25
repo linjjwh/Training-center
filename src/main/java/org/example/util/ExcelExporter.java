@@ -1,16 +1,33 @@
 package org.example.util;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.model.TrainingApplication;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public class ExcelExporter {
+
+    private static final String[] HEADERS = {
+            "ID",
+            "ФИО",
+            "Email",
+            "Телефон",
+            "Курс",
+            "Дата",
+            "Статус",
+            "Форма обучения",
+            "Комментарий"
+    };
 
     private ExcelExporter() {
     }
@@ -19,22 +36,31 @@ public class ExcelExporter {
             List<TrainingApplication> applications,
             String fileName
     ) throws IOException {
+        export(applications, new File(fileName));
+    }
+
+    public static void export(
+            List<TrainingApplication> applications,
+            File file
+    ) throws IOException {
 
         try (Workbook workbook = new XSSFWorkbook()) {
 
             Sheet sheet = workbook.createSheet("Заявки");
 
+            CellStyle headerStyle = workbook.createCellStyle();
+
+            Font font = workbook.createFont();
+            font.setBold(true);
+            headerStyle.setFont(font);
+
             Row header = sheet.createRow(0);
 
-            header.createCell(0).setCellValue("ID");
-            header.createCell(1).setCellValue("ФИО");
-            header.createCell(2).setCellValue("Email");
-            header.createCell(3).setCellValue("Телефон");
-            header.createCell(4).setCellValue("Курс");
-            header.createCell(5).setCellValue("Дата");
-            header.createCell(6).setCellValue("Статус");
-            header.createCell(7).setCellValue("Тип обучения");
-            header.createCell(8).setCellValue("Комментарий");
+            for (int i = 0; i < HEADERS.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(HEADERS[i]);
+                cell.setCellStyle(headerStyle);
+            }
 
             int rowNumber = 1;
 
@@ -47,37 +73,51 @@ public class ExcelExporter {
 
                 row.createCell(1)
                         .setCellValue(
-                                application.getUser().getFullName()
+                                application.getUser() == null
+                                        ? ""
+                                        : application.getUser().getFullName()
                         );
 
                 row.createCell(2)
                         .setCellValue(
-                                application.getUser().getEmail()
+                                application.getUser() == null
+                                        ? ""
+                                        : application.getUser().getEmail()
                         );
 
                 row.createCell(3)
                         .setCellValue(
-                                application.getUser().getPhone()
+                                application.getUser() == null
+                                        ? ""
+                                        : application.getUser().getPhone()
                         );
 
                 row.createCell(4)
                         .setCellValue(
-                                application.getCourseName()
+                                application.getCourseName() == null
+                                        ? ""
+                                        : application.getCourseName()
                         );
 
                 row.createCell(5)
                         .setCellValue(
-                                application.getApplicationDate().toString()
+                                application.getApplicationDate() == null
+                                        ? ""
+                                        : application.getApplicationDate().toString()
                         );
 
                 row.createCell(6)
                         .setCellValue(
-                                application.getStatus().name()
+                                application.getStatus() == null
+                                        ? ""
+                                        : application.getStatus().getDisplayName()
                         );
 
                 row.createCell(7)
                         .setCellValue(
-                                application.getEducationType().name()
+                                application.getEducationType() == null
+                                        ? ""
+                                        : application.getEducationType().getDisplayName()
                         );
 
                 row.createCell(8)
@@ -88,12 +128,12 @@ public class ExcelExporter {
                         );
             }
 
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < HEADERS.length; i++) {
                 sheet.autoSizeColumn(i);
             }
 
-            try (FileOutputStream outputStream =
-                         new FileOutputStream(fileName)) {
+            try (OutputStream outputStream =
+                         new FileOutputStream(file)) {
 
                 workbook.write(outputStream);
             }

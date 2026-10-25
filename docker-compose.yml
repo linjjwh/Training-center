@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: trainingcentre-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: trainingcentre
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      - ./src/main/java/org/example/sql/database.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d trainingcentre"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+volumes:
+  postgres-data:

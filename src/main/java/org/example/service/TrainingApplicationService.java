@@ -112,6 +112,10 @@ public class TrainingApplicationService {
         return applicationRepository.searchByUserName(userName);
     }
 
+    public List<TrainingApplication> findByUserId(int userId) {
+        return applicationRepository.findByUserId(userId);
+    }
+
     public List<TrainingApplication> findByStatus(
             ApplicationStatus status
     ) {
